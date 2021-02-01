@@ -53,8 +53,12 @@ while True:
     time = ctime()
     for clas in schedule.get(time[:3]):
         if time[11:16] == clas[:5]:
+            driver.switch_to.window(driver.window_handles[0])
             driver.get("https://classroom.google.com/u/0/c/" + clas[5:])
-            login()
+            try:
+                login()
+            except:
+                pass
             while True:
                 try:
                     link = driver.find_element_by_partial_link_text("https://meet.google.com/lookup/")
