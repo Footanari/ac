@@ -2,13 +2,14 @@ gmail = ""
 password = ""
 schedule = {
     "Mon": ["", ""],
-    "Tue": ["", "", ""],
-    "Wed": ["", ""],
-    "Thu": ["", "", ""],
-    "Fri": ["", ""],
-    "Sat": [""],
-    "Sun": [""]
+    "Tue": ["", "", "", ""],
+    "Wed": ["", "", ""],
+    "Thu": ["", "", "", ""],
+    "Fri": ["", "", ""],
+    "Sat": ["_"],
+    "Sun": ["_"]
 }
+path = r'.\chromedriver.exe'#download and put the path to chromedriver.exe here
 
 from time import ctime, sleep
 from selenium import webdriver
@@ -16,10 +17,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import pyautogui
 
-path = r'.\chromedriver.exe'#download and put the path to chromedriver.exe here
 driver = webdriver.Chrome(path)
 
 def login():
+    while True:
+        try:
+            driver.get("https://accounts.google.com/signin/v2/identifier?hl=bg&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
+            break
+        except:
+            print("connect earror")
     textbox = driver.find_element_by_name("identifier")
     textbox.send_keys(gmail)
     textbox.send_keys(Keys.RETURN)
@@ -32,7 +38,6 @@ def login():
         except:
             pass
 def joinMeet():
-    driver.switch_to.window(driver.window_handles[1])
     while(True):
         if driver.title[:4]=="Meet":
             sleep(3)
@@ -47,24 +52,17 @@ def joinMeet():
         else:
             sleep(60)
             driver.refresh()
-    driver.switch_to.window(driver.window_handles[0])
 
+login()
 while True:
     time = ctime()
     for clas in schedule.get(time[:3]):
         if time[11:16] == clas[:5]:
-            driver.switch_to.window(driver.window_handles[0])
-            driver.get("https://classroom.google.com/u/0/c/" + clas[5:])
-            try:
-                login()
-            except:
-                pass
             while True:
                 try:
-                    link = driver.find_element_by_partial_link_text("https://meet.google.com/lookup/")
-                    link.click()
+                    driver.get("https://meet.google.com/lookup/" + clas[5:] + "?authuser=1&hs=179")
                     break
                 except:
-                    pass
+                    print("connect earror")
             joinMeet()
     sleep(60)
