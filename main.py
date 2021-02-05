@@ -25,7 +25,7 @@ def login():
             driver.get("https://accounts.google.com/signin/v2/identifier?hl=bg&passive=true&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAZAAQ&flowName=GlifWebSignIn&flowEntry=ServiceLogin")
             break
         except:
-            print("connect earror")
+            print("connect error")
     textbox = driver.find_element_by_name("identifier")
     textbox.send_keys(gmail)
     textbox.send_keys(Keys.RETURN)
@@ -63,6 +63,6 @@ while True:
                     driver.get("https://meet.google.com/lookup/" + clas[5:] + "?authuser=1&hs=179")
                     break
                 except:
-                    print("connect earror")
+                    print("connect error")
             joinMeet()
     sleep(60)
